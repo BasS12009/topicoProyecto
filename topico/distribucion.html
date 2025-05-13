@@ -30,6 +30,7 @@
     </div>
   </nav>
 
+  
   <main>
     <section id="que-es" class="section-card">
       <div class="section-header">
@@ -56,6 +57,49 @@
             <li><strong>Próxima LTS:</strong> Ubuntu 26.04 (Abril 2026)</li>
             <li><strong>Versiones intermedias:</strong> 24.10, 25.04, 25.10…</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+        <section id="respaldo" class="section-card reverse">
+      <div class="section-content">
+        
+        <div class="content-text">
+          <h3>Respaldo</h3>
+          <p>Es importante respaldar archivos y configuraciones esenciales del sistema. A continuación, se presenta un script que comprime y guarda la carpeta personal del usuario con fecha y hora.</p>
+          
+          <h4>Elementos a respaldar:</h4>
+          <ul>
+            <li>Carpeta personal del usuario (/home/usuario)</li>
+            <li>Configuraciones del sistema</li>
+            <li>Archivos de servicios importantes</li>
+          </ul>
+
+          <h4>Script de respaldo:</h4>
+          <pre><code>
+#!/bin/bash
+
+# Carpeta a respaldar
+ORIGEN="/home/usuario"
+
+# Carpeta destino
+DESTINO="/home/usuario/respaldo"
+
+# Fecha actual
+FECHA=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# Nombre del archivo
+ARCHIVO="respaldo_$FECHA.tar.gz"
+
+# Crear carpeta si no existe
+mkdir -p "$DESTINO"
+
+# Generar respaldo
+tar -czvf "$DESTINO/$ARCHIVO" "$ORIGEN"
+
+echo "Respaldo guardado en $DESTINO/$ARCHIVO"
+          </code></pre>
+          <p>Puedes automatizar este script con <code>cron</code> para realizar respaldos periódicos.</p>
         </div>
       </div>
     </section>

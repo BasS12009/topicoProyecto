@@ -108,6 +108,100 @@
   </div>
 
   <div class="service-detail">
+    <h3>Pasos para levantar un servidor Git usando Docker en WSL (Ubuntu)</h3>
+    <ol>
+      <li><strong>1. Instalación de Docker en WSL</strong>
+        <p>Primero, asegúrate de tener Docker instalado en tu sistema WSL con Ubuntu. Si no lo tienes, sigue estos pasos:</p>
+        <pre><code>
+# Actualiza tu lista de paquetes
+sudo apt update
+
+# Instala las dependencias necesarias
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+# Añade la clave GPG de Docker
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+# Añade el repositorio de Docker
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+# Actualiza nuevamente la lista de paquetes
+sudo apt update
+
+# Instala Docker
+sudo apt install docker-ce
+
+# Verifica la instalación
+sudo systemctl status docker
+        </code></pre>
+        <p>Una vez instalado Docker, asegúrate de que el servicio Docker se esté ejecutando.</p>
+      </li>
+
+      <li><strong>2. Instalación de Git en el contenedor</strong>
+        <p>Ahora, crearemos un contenedor Docker con Git instalado:</p>
+        <pre><code>
+# Crea un contenedor con Ubuntu
+sudo docker run -it ubuntu bash
+
+# Instala Git dentro del contenedor
+apt update
+apt install git
+        </code></pre>
+      </li>
+
+      <li><strong>3. Configuración del repositorio Git</strong>
+        <p>Una vez instalado Git dentro del contenedor Docker, configura tu nombre y correo electrónico:</p>
+        <pre><code>
+# Configura tu nombre
+git config --global user.name "Tu Nombre"
+
+# Configura tu correo electrónico
+git config --global user.email "tuemail@example.com"
+        </code></pre>
+      </li>
+
+      <li><strong>4. Crear un repositorio Git en el contenedor</strong>
+        <p>Crea una carpeta de repositorios y un repositorio nuevo dentro del contenedor Docker:</p>
+        <pre><code>
+# Crea un directorio para tus repositorios
+mkdir /repositorios
+cd /repositorios
+
+# Inicializa un nuevo repositorio
+git init mi-repositorio
+        </code></pre>
+      </li>
+
+      <li><strong>5. Acceder al repositorio desde tu máquina local</strong>
+        <p>Puedes compartir este repositorio con tu máquina local utilizando SSH o por medio de un volumen de Docker. Asegúrate de exponer el puerto necesario para acceder al repositorio desde cualquier lugar.</p>
+      </li>
+
+      <li><strong>6. Levantar el servicio de Git</strong>
+        <p>Si deseas mantener el servidor Git corriendo permanentemente, puedes hacerlo con Docker Compose. Aquí un ejemplo:</p>
+        <pre><code>
+# Crea un archivo docker-compose.yml
+version: '3'
+services:
+  git-server:
+    image: ubuntu
+    container_name: git-server
+    command: bash -c "while true; do sleep 1000; done"
+    ports:
+      - "8080:8080"
+        </code></pre>
+        <p>Este archivo mantendrá el contenedor en ejecución y disponible para aceptar conexiones a través del puerto 8080.</p>
+      </li>
+
+      <li><strong>7. Clonar el repositorio Git</strong>
+        <p>Desde tu máquina local, puedes clonar el repositorio Git que se encuentra en tu servidor Docker usando el siguiente comando:</p>
+        <pre><code>
+git clone http://localhost:8080/mi-repositorio
+        </code></pre>
+      </li>
+    </ol>
+  </div>
+
+  <div class="service-detail">
     <p>A continuación, presentamos un video explicativo donde se detalla la implementación del servicio Git.</p>
 
     <div class="video-container" style="margin-top: 1rem;">
@@ -123,6 +217,7 @@
     </div>
   </div>
 </section>
+
 
   
   </main>
